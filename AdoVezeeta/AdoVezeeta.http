@@ -1,0 +1,6 @@
+@AdoVezeeta_HostAddress = http://localhost:5230
+
+GET {{AdoVezeeta_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
