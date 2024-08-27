@@ -1,5 +1,7 @@
 
-using AdoDapper.Extensions;
+using Ado_Dapper_efcore;
+using Ado_Dapper_efcore.Extensions;
+
 using AdoVezeeta.BenchMarkers;
 using BenchmarkDotNet.Running;
 using DapperService.Extension;
@@ -14,8 +16,11 @@ builder.Services.AddEfCoreServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDapperServices(builder.Configuration);
-builder.Services.AddLifeTimes(builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? throw new Exception("Connection string is null"));
+builder.Services.AddSqlConnectionFactory(
+    builder.Configuration.GetConnectionString("DefaultConnection")??
+    throw new Exception("Connection string not found"));
+
+
 var app = builder.Build();
 
 

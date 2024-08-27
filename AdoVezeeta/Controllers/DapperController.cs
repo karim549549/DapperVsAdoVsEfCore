@@ -21,8 +21,10 @@ namespace AdoVezeeta.Controllers
             var parameters = new DynamicParameters();
             parameters.Add("@Title", title);
             parameters.Add("@Content", content);
+
             var result  =await _dbConnection.ExecuteAsync(sql,
                 parameters,commandType: CommandType.Text);
+
             return Ok(new
             {
                 message = "Created Successfully",

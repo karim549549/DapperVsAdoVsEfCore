@@ -37,7 +37,7 @@ namespace AdoDapper
                 for (var i = 0; i < reader.FieldCount; i++)
                 {
                     var name = reader.GetName(i);
-                    var property = properties.FirstOrDefault(x => x.Name == name);
+                    var property =  properties.FirstOrDefault(x => x.Name == name);
 
                     if (property != null && !await reader.IsDBNullAsync(i))
                     {

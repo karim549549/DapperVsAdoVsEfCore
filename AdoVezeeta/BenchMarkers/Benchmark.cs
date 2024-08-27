@@ -1,4 +1,4 @@
-﻿using AdoDapper;
+﻿using Ado_Dapper_efcore;
 using BenchmarkDotNet.Attributes;
 using Dapper;
 using Domain.Entities;
@@ -15,14 +15,13 @@ namespace AdoVezeeta.BenchMarkers
     public class Benchmark
     {
         private const string ConnectionString = "Server=DESKTOP-L6DHQ4D;Database=AdoDapperTask;Trusted_Connection=True;TrustServerCertificate=True;Max Pool Size=100000;Min Pool Size=1;";
-        private IAdoDapper<Post> _adoDapper;
+
         private readonly SqlConnectionFactory _sqlConnectionFactoy= new SqlConnectionFactory(ConnectionString);
         private readonly ApplicationDbContext _dbContext;
+        private SqlConnection _connection;
         public Benchmark()
         {
-            var sqlCommandProvider = new SqlCommandProvider(_sqlConnectionFactoy);
-            var reflectionReader = new ReflectionReader<Post>();
-            _adoDapper = new AdoDapper<Post>(sqlCommandProvider, reflectionReader);
+            _connection = _sqlConnectionFactoy.Create();
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                     .UseSqlServer(ConnectionString)
                     .Options;
@@ -32,25 +31,21 @@ namespace AdoVezeeta.BenchMarkers
         [Benchmark]
         public async Task DapperGetAll()
         {
-            var connection = _sqlConnectionFactoy.Create();
-            using (connection)
-            {
-                var result = await connection.QueryAsync<Post>("SELECT * FROM POSTS");
-            }
-        }
 
+            await _connection.QueryAsync<Post>("SELECT * FROM POSTS");
+            
+        }
         [Benchmark]
-        public async Task AdoGetAll()
+        public async Task NewDapper()
         {
-            var sql = "SELECT * FROM POSTS";
-            var posts = await _adoDapper.ExecuteQueryAsync(sql);
+            await _connection.QueryAsync<Post>("SELECT * FROM POSTS");
         }
-
         [Benchmark]
         public async Task EFGetAll()
         {
             var posts = await _dbContext.Posts.ToListAsync();
         }
+
     }
 }
 

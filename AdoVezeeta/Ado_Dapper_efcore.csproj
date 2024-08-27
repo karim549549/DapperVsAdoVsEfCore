@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AdoDapper\AdoDapper.csproj" />
+    <ProjectReference Include="..\DapperExtension\CustomDapper.csproj" />
     <ProjectReference Include="..\DapperService\DapperService.csproj" />
     <ProjectReference Include="..\EfCoreSerivce\EfCoreSerivce.csproj" />
   </ItemGroup>
